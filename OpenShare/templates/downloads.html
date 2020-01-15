@@ -1,0 +1,40 @@
+
+<html>
+<head>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Open Share</title>
+<link rel='stylesheet' href='{{ url_for('static', filename='css/style.css')}}'>
+</head>
+<body>
+<div id="wrapper">
+	<div id="header">
+		<div id="logo">
+			<h1>Open Share</h1>
+			<h2>Created by Dovn and Anarchyst</h2>
+		</div>
+		<div id="menu">
+			<ul>
+				<li class="first current_page_item"><a href="down_all">Download all</a></li>
+				
+			</ul>
+			<br class="clearfix" />
+		</div>
+	</div>
+	<div id="page">
+		<div id="content">
+			<div id="post1">
+				<h2>Here your download links: </h2>
+				    {% if filenames %}
+                    {% for file in filenames %}
+                    <a href="{{file.name}}">{{file.name}} [{{file.size}}]<br></a>
+                    {% endfor %}
+                    {% else %}
+                    <p>No one file in directory</p>
+                    {% endif %}
+			</div>
+<div id="footer" >&copy; Anarchy, no rights, free soft. Photo from <a href="https://Unsplash.com" rel="nofollow">Unsplash</a>.
+</div>
+</body>
+</html>

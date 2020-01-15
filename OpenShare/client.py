@@ -2,18 +2,17 @@ import requests
 import threading
 import config
 
-def get_hosts():
-    hosts = []
-    done = 0
-    
-    def update(i):
-        try:
-            r = requests.get((config.URL + "/info") % i, timeout=5)
-            if r.text.startswith("OpenShare server"):
-                hosts.append(r.url)
+hosts = []
+done = 0
+   
+def update(i):
+    try:
+        r = requests.get((config.URL + "/info") % i, timeout=5)
+        if r.text.startswith("OpenShare Server"):
+            hosts.append(r.url)
             
-        except:
-            pass
+    except:
+        pass
         
         nonlocal done
         done += 1
