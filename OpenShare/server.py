@@ -1,9 +1,10 @@
 from flask import Flask, escape, request, send_file, render_template, redirect
 import netifaces
-import hashlib
 import webbrowser
+import pyqrcode
 
 import os
+import hashlib
 
 import config
 
@@ -19,10 +20,14 @@ def hello():
     for entity in os.scandir(config.FOLDER):
         if not entity.is_file():
             continue
-        
+
         filenames.append({"name": entity.name, "size": round(entity.stat().st_size*0.00000095367432, 3)})
-    
+
     return render_template('downloads.html', filenames=filenames)
+
+@app.route('/info')
+def iformation():
+    return 'OpenShare Server'
 
 @app.route('/<filename>')
 def get_file(filename):
@@ -31,18 +36,13 @@ def get_file(filename):
 
     return send_file(config.FOLDER+'\\'+filename)
 
-@app.route('/down_all')
+#@app.route('/down_all')
 def down_all():
     for entity in os.scandir(config.FOLDER):
         if not entity.is_file():
             continue
-        
-        return send_file(config.FOLDER+'\\'+entity.name)
-        
 
-@app.route('/info')
-def iformation():
-    return 'OpenShare Server'
+        return send_file(config.FOLDER+'\\'+entity.name)
 
 # Preparing to Uploading
 if config.CLEAN:
@@ -58,7 +58,7 @@ for i in netifaces.interfaces():
     iface = netifaces.ifaddresses(i).get(netifaces.AF_INET)
     if not iface:
         continue
-    
+
     for data in iface:
         netfaces.append(data['addr'])
 
@@ -66,6 +66,11 @@ host = None
 for h in netfaces:
     if h.startswith('192.168.'):
         host = h
-    
-webbrowser.open_new("http://"+host+":"+str(config.PORT))
+
+sever_http = "http://"+host+":"+str(config.PORT)
+
+qr = pyqrcode.create(sever_http)
+qr.png(config.QRPLACE, 8)
+
+webbrowser.open_new(sever_http)
 app.run(host, config.PORT)
