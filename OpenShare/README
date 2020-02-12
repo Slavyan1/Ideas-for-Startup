@@ -1,0 +1,9 @@
+This is app which sends files local by wi-fi network. 
+
+Using: 
+-Python 3.7
+-Flask
+-Netifaces
+-pyqrcode
+
+After starting server.py, will scaned Upload folder for files, and thats files will be send.
